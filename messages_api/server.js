@@ -8,6 +8,10 @@ const { Message } = require('./models/index')
 
 seed()
 
+let id = 2
+
+app.use(express.json())
+
 //*************** ROUTES ******************//
 
 // Route to show json of all cards
@@ -22,15 +26,30 @@ app.get('/messages/:id', async (req, res) =>  {
     res.json({message})
 })
 
-app.post('/messages', async (req, res) => {
-    let body = json(req.body);
-    let message = body.message;
-    var sql = `INSERT INTO messages (message) VALUES ("${message}")`;
-    db.query(sql, function(err, result) {
-    if (err) throw err;
-    console.log('record inserted');
-    req.flash('success', 'Data added successfully!');
-  });
+app.post('/messages', function(req, res) {
+    let date = new Date(Date.now());
+    date = date.toString();
+    let message = req.body.message;
+    var sql = `INSERT INTO messages (id, message, createdAt, updatedAt) VALUES ("${id}", "${message}", "${date}", "${date}")`;
+    db.query(sql);
+    console.log(req.body.message);
+    id = id + 1;
+    res.send('Added message to database at ' + date);
+})
+
+app.put('/messages/:id', function(req, res) {
+    let date = new Date(Date.now());
+    date = date.toString();
+    let message = req.body.message;
+    let sql = `UPDATE messages SET message = "${message}", updatedAt = "${date}" WHERE id = ${req.params.id};`
+    db.query(sql)
+    res.send("Updated message with id " + req.params.id + " to " + message)
+})
+
+app.delete('/messages/:id', function(req, res) {
+    let sql = `DELETE FROM messages WHERE id = ${req.params.id}`;
+    db.query(sql);
+    res.send("Deleted message with ID " + req.params.id);
 })
 
 app.listen( PORT, () => {
