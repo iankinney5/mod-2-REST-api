@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Grid, makeStyles, Button, Typography } from "@material-ui/core";
 
 import { withAppContext } from "../AppContext";
-import girlImage from "../assets/images/cute-girl-writing-journal.jpg";
 
 const useStyles = makeStyles({
   container: {

@@ -25,7 +25,6 @@ function App() {
         <ProtectRoutes path="/edit/:id" component={EditNote} />
         <ProtectRoutes path="/read/:id" component={ReadNote} />
       </Switch>
-      <Footer />
     </Grid>
   );
 }
